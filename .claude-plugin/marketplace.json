@@ -1,16 +1,14 @@
 {
   "name": "devkit-plugins",
+  "description": "Developer toolkit plugins for Claude Code.",
   "owner": {
     "name": "reza",
     "email": "reza.wikrama3@gmail.com"
   },
-  "metadata": {
-    "pluginRoot": "./plugins"
-  },
   "plugins": [
     {
       "name": "devkit",
-      "source": "devkit",
+      "source": "./plugins/devkit",
       "description": "Developer toolkit: review-sps code review (Security > Performance > Simplicity)."
     }
   ]
