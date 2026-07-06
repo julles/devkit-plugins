@@ -17,9 +17,17 @@ Rules of the road:
 - **Never generate code before the spec is approved.**
 - **Migration is generated; tests are not** (leave tests to a separate step).
 - **Do not create OpenAPI/Swagger** or any API-contract artifact.
-- Bake in the house rules from the start: input validation, parameterized
-  queries, no over-engineering. For money paths, apply the `pay-check` rules
-  (idempotency key, money as integer minor-units, atomic balance updates).
+- **Generate code that already passes the SPS review**, in priority order
+  Security > Performance (non-negotiable) > Simplicity:
+  - **Security**: validate input at the boundary, parameterized queries, no
+    hardcoded secrets, permission checks on protected operations.
+  - **Performance**: no N+1 (load related data in one query), paginate list
+    endpoints, index columns the queries filter/join/sort on, no needless work
+    on hot paths.
+  - **Simplicity**: no speculative abstraction — mirror the existing slice, keep
+    it something a junior can follow.
+  - For money paths, also apply the `pay-check` rules (idempotency key with a DB
+    unique constraint, money as integer minor-units, atomic balance updates).
 
 ## Step 1 — Create the spec
 
