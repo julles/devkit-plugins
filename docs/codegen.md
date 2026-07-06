@@ -10,10 +10,25 @@ change is a fresh spec through the same flow.
 
 ## Invocation
 
+Run the whole flow end-to-end:
+
 ```
 /devkit:codegen "refund endpoint"     # explores, drafts a spec, then generates
 /devkit:codegen specs/payout.md       # starts from an existing spec file
 ```
+
+Or run one step at a time (state is handed off through files in `specs/`, so you
+can pause and resume between stages):
+
+```
+/devkit:codegen-explore     <feature>   # → specs/<feature>.explore.md
+/devkit:codegen-create-spec <feature>   # → specs/<feature>.md
+/devkit:codegen-apply       <feature>   # generate code from the approved spec
+/devkit:codegen-archive     <feature>   # → specs/archive/<date>-<feature>.md
+```
+
+Approval is implicit: you review (and edit) `specs/<feature>.md`, then running
+`codegen-apply` is the go-ahead to generate.
 
 ## The five-step flow
 

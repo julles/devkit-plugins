@@ -9,6 +9,18 @@ Spec-driven generation for backend features. The flow is linear and one-shot:
 
 **explore → create spec → developer approves/enhances → generate code → developer archives.**
 
+This skill runs the whole flow end-to-end. Each step is **also available as its
+own command** for granular control (state is handed off through files in
+`specs/`):
+
+- `/devkit:codegen-explore <feature>` → writes `specs/<feature>.explore.md`
+- `/devkit:codegen-create-spec <feature>` → writes `specs/<feature>.md`
+- `/devkit:codegen-apply <feature>` → generates code from the approved spec
+- `/devkit:codegen-archive <feature>` → archives the spec
+
+Use the step commands when you want to pause between stages; use this umbrella
+command to run straight through.
+
 The spec is a **single-use instruction**, not a living contract. Each new feature
 or change is a fresh spec. Generated code **mirrors an existing feature in the
 repo** — it is not a generic template.

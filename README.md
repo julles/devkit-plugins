@@ -9,7 +9,7 @@ Current skills:
 | review-sps | `/devkit:review-sps` | Reviews a **single feature/change** (diff, files, or named feature) with priorities **Security > Performance > Simplicity**, then applies fixes only when you approve them. |
 | audit-sps | `/devkit:audit-sps` | Scans the **whole existing codebase** against the same SPS ruleset — fans out across modules, ranks findings globally, then applies fixes only when you approve them. |
 | pay-check | `/devkit:pay-check` | **Payment-domain review** for money-handling backends — idempotency, money representation, atomic balance updates, webhook verification, transaction state machines, PAN/PII exposure, provider-call resilience. Same review→approve→apply flow. |
-| codegen | `/devkit:codegen` | **Spec-driven scaffolding** — from a lightweight Markdown spec, generates a vertical slice (handler, service, repository, DTO/model, migration) that mirrors the repo's conventions. Migration included, tests deferred, no OpenAPI. |
+| codegen | `/devkit:codegen` | **Spec-driven scaffolding** — from a lightweight Markdown spec, generates a vertical slice (handler, service, repository, DTO/model, migration) that mirrors the repo's conventions. Migration included, tests deferred, no OpenAPI. Runs end-to-end, or step-by-step via `codegen-explore` → `codegen-create-spec` → `codegen-apply` → `codegen-archive`. |
 
 Detailed per-skill documentation, with payment-gateway examples, lives in
 [`docs/`](docs/README.md).
