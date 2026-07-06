@@ -8,6 +8,7 @@ Current skills:
 | ----- | ------- | ------------ |
 | review-sps | `/devkit:review-sps` | Reviews a **single feature/change** (diff, files, or named feature) with priorities **Security > Performance > Simplicity**, then applies fixes only when you approve them. |
 | audit-sps | `/devkit:audit-sps` | Scans the **whole existing codebase** against the same SPS ruleset — fans out across modules, ranks findings globally, then applies fixes only when you approve them. |
+| pay-check | `/devkit:pay-check` | **Payment-domain review** for money-handling backends — idempotency, money representation, atomic balance updates, webhook verification, transaction state machines, PAN/PII exposure, provider-call resilience. Same review→approve→apply flow. |
 
 > More skills (e.g. a code generator) will live under the same `devkit` namespace: `/devkit:gen`, etc.
 
@@ -71,6 +72,20 @@ It fans out across modules (parallel subagents on larger repos), ranks all
 findings globally, and collapses repetitive low-severity simplicity noise into
 counts so the important items stay visible.
 
+### pay-check — payment-domain review
+
+```
+/devkit:pay-check                     # reviews payment code in your diff
+/devkit:pay-check internal/payment/   # reviews a payment module
+/devkit:pay-check refund flow         # finds and reviews the refund feature
+```
+
+Adds payment-specific rules on top of the generic review: money as integer
+minor-units/decimal (never float), enforced idempotency keys, atomic balance
+updates, webhook signature + replay protection, valid transaction state
+transitions, no PAN/PII in logs, and resilient provider calls (timeout after a
+charge → reconcile, don't blindly retry).
+
 ## Repo layout
 
 ```
@@ -84,8 +99,10 @@ devkit-plugins/
 │       └── skills/
 │           ├── review-sps/
 │           │   └── SKILL.md        # single feature/diff review
-│           └── audit-sps/
-│               └── SKILL.md        # whole-codebase scan
+│           ├── audit-sps/
+│           │   └── SKILL.md        # whole-codebase scan
+│           └── pay-check/
+│               └── SKILL.md        # payment-domain review
 └── README.md
 ```
 

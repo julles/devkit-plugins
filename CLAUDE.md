@@ -52,7 +52,9 @@ consistent with them:
 - **Read the target repo's `CLAUDE.md`** for language/convention context before
   reviewing, so findings fit the repo instead of being generic.
 
-Current skills: `review-sps` (one feature/diff) and `audit-sps` (whole-codebase
+Current skills: `review-sps` (one feature/diff), `audit-sps` (whole-codebase
 scan — fans out to subagents per module, ranks globally, collapses repetitive
-low-severity noise). When adding a skill, restate the shared ruleset in its
+low-severity noise), and `pay-check` (payment-domain review — idempotency, money
+representation, atomic balance updates, webhook verification; layered on top of
+the generic SPS review). When adding a skill, restate the shared ruleset in its
 `SKILL.md` — skills are loaded independently and must be self-contained.
