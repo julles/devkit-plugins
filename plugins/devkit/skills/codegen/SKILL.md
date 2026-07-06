@@ -1,13 +1,13 @@
 ---
 name: codegen
-description: Spec-driven backend code generation. First generate a lightweight Markdown spec for the developer to review and approve; only then generate a vertical slice (handler, service, repository, DTO/model, migration) that mirrors the repo's existing conventions; then archive the spec. Use when the user says "codegen", "generate <feature/endpoint>", "scaffold <resource>", or "implement this spec". Generates migration; defers tests. Does NOT produce OpenAPI.
+description: Spec-driven backend code generation. First explore the repo, then auto-write a lightweight Markdown spec named after the feature for the developer to review/enhance and approve; only then generate a vertical slice (handler, service, repository, DTO/model, migration) that mirrors the repo's existing conventions; archive the spec when the developer says so. Use when the user says "codegen", "generate <feature/endpoint>", "scaffold <resource>", or "implement this spec". Generates migration; defers tests. Does NOT produce OpenAPI.
 ---
 
 # codegen
 
 Spec-driven generation for backend features. The flow is linear and one-shot:
 
-**create spec → developer approves → generate code → archive spec.**
+**explore → create spec → developer approves/enhances → generate code → developer archives.**
 
 The spec is a **single-use instruction**, not a living contract. Each new feature
 or change is a fresh spec. Generated code **mirrors an existing feature in the
@@ -29,11 +29,27 @@ Rules of the road:
   - For money paths, also apply the `pay-check` rules (idempotency key with a DB
     unique constraint, money as integer minor-units, atomic balance updates).
 
-## Step 1 — Create the spec
+## Step 1 — Explore
 
-Whatever the developer gives you (a one-line request, a rough description, or an
-existing spec file), produce a spec in this shape and save it as the active spec
-at `specs/<feature>.md`:
+Before writing anything, understand the repo. Read `CLAUDE.md` and manifests
+(`go.mod`, `package.json`) for stack and conventions, then explore the code
+(use the `Explore` agent or codegraph on larger repos) to find:
+
+- **A mirror slice**: an existing analogous feature/module to copy the structure,
+  naming, DI, error handling, validation, and query style from.
+- **Neighbours of the entity**: related models, existing tables/columns, enums,
+  and how similar endpoints are shaped.
+- **Cross-cutting conventions**: auth/permission approach, error/response format,
+  pagination style, migration tooling.
+
+Summarize what you found briefly — this grounds the spec in the real codebase,
+not assumptions.
+
+## Step 2 — Create the spec (auto)
+
+From the exploration, **automatically write** the spec file, named after the
+feature, at `specs/<feature>.md` (kebab-case, e.g. `specs/refund.md`). Ground it
+in what you found (real entity fields, real conventions, real endpoint shapes):
 
 ```markdown
 # <Feature name>
@@ -52,27 +68,24 @@ at `specs/<feature>.md`:
 
 ## Business rules
 - <cross-cutting rules: money is minor-units, state transitions, auth, ...>
+
+## Mirror slice
+- <path of the existing feature this will be modeled on>
 ```
 
-If essentials are missing (a field type, an error case, an auth rule), ask
-before finalizing — don't guess.
+If essentials are genuinely unknowable from the code (a business rule, an error
+case), ask — don't invent them.
 
-## Step 2 — Developer approves (gate)
+## Step 3 — Developer approves / enhances (gate)
 
-Show the full spec and ask the developer to review it. They may edit, add rules,
-or approve. **Stop here until they approve.** Do not write any code yet.
+Show the spec file and ask the developer to review it. They may edit it directly,
+have you enhance it, add rules, or approve. **Stop here until they approve.** Do
+not write any code yet.
 
-## Step 3 — Generate code from the approved spec
+## Step 4 — Generate code from the approved spec
 
-### Learn the repo's conventions (mirror, don't invent)
-Read the target repo's `CLAUDE.md` and manifests (`go.mod`, `package.json`) for
-stack and conventions. Then **find one existing feature/slice to mirror** (an
-analogous resource/module). Copy its structure, naming, error handling, DI,
-validation approach, and query style — the code must read as if the same team
-wrote it.
-
-### Generate the slice
-Briefly list the files you'll create/modify, then generate:
+Following the mirror slice from Step 1, briefly list the files you'll
+create/modify, then generate:
 - **DTO/model** from the spec's entity fields + constraints.
 - **Handler** validates the request against the spec; maps errors to the spec's
   status codes.
@@ -82,28 +95,23 @@ Briefly list the files you'll create/modify, then generate:
   indexes on filtered/joined columns, sensible constraints; reversible).
 - **Wiring**: register routes/DI/module.
 
-For money/payment operations, generate code that already satisfies `pay-check`
-(enforced idempotency key with a DB unique constraint, atomic balance updates,
-no float money, no PAN/PII in logs). Keep it simple — no speculative abstraction.
+For money/payment operations, generate code that already satisfies `pay-check`.
+Keep it simple — no speculative abstraction. Do **not** generate tests or OpenAPI.
 
-Do **not** generate tests or OpenAPI.
+Then run the repo's build/typecheck (`go build ./...`, `npm run build`) and fix
+compile errors. Report what was generated (per file) and what's left manual
+(e.g. provider credentials in config). Offer to run `/devkit:pay-check` on the
+new money code.
 
-### Wire, verify, report
-- Run the repo's build/typecheck (`go build ./...`, `npm run build`) and fix
-  compile errors. Do not run or write tests.
-- Report what was generated (per file) and what's left manual (e.g. provider
-  credentials in config, env vars). Offer to run `/devkit:pay-check` on the new
-  money code.
+## Step 5 — Developer archives
 
-## Step 4 — Archive the spec
-
-Once code generation succeeds, move the spec out of the active folder into the
-archive as a historical record:
+**Do not archive automatically.** Once the developer is satisfied and asks to
+archive (or confirms the feature is done), move the spec into the archive:
 
 ```
 specs/<feature>.md  →  specs/archive/<YYYY-MM-DD>-<feature>.md
 ```
 
-Use today's date. Create `specs/archive/` if it doesn't exist. The active
-`specs/` folder should only hold specs not yet implemented. A later change is a
-**new** spec through this same flow — not an edit of an archived one.
+Use today's date; create `specs/archive/` if needed. The active `specs/` folder
+then only holds specs not yet implemented. A later change is a **new** spec
+through this same flow — not an edit of an archived one.
