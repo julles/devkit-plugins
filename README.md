@@ -92,11 +92,18 @@ charge → reconcile, don't blindly retry).
 /devkit:codegen a refund endpoint     # drafts the spec first, then generates
 ```
 
-A lightweight **Markdown spec is the source of truth**. codegen mirrors an
-existing feature slice in your repo (structure, naming, DI, error handling),
-shows a file plan for approval, then generates handler → service → repository →
-DTO/model → migration, with the house rules and payment rules baked in. It does
-**not** generate tests or OpenAPI. Re-running against an updated spec syncs the
+Two gates:
+
+1. **Spec first** — codegen writes a lightweight Markdown spec (entity, fields,
+   operations, business rules) and shows it for review. You edit/approve. It
+   generates **no code** until the spec is approved, then saves it under `specs/`.
+2. **Then code** — after approval it mirrors an existing feature slice in your
+   repo (structure, naming, DI, error handling) and generates handler → service
+   → repository → DTO/model → migration, with the house rules and payment rules
+   baked in.
+
+The **Markdown spec is the source of truth**. It does **not** generate tests or
+OpenAPI. Re-running against an updated spec re-confirms the spec, then syncs the
 code.
 
 ## Repo layout
