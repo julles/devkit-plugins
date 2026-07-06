@@ -13,6 +13,13 @@ Required flow: **review first → present numbered findings + suggestions → DO
 apply.** Only edit files when the developer explicitly asks ("implement", "apply
 #2", "apply all money"). Apply only what they approve — never auto-apply.
 
+## Output language
+
+Write findings in **English by default**. If the developer asks for Indonesian
+(e.g. "bahasa Indonesia", "in Indonesian", or an `id` / `--lang id` argument),
+write the Problem, Suggestion, and summary text in Indonesian. Always keep code,
+identifiers, file paths, severity labels, and command names unchanged.
+
 ## 1. Determine scope (from arguments)
 
 - **Empty / "diff"** → `git diff` (unstaged + staged); if clean, `git diff

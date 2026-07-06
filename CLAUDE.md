@@ -54,10 +54,16 @@ consistent with them:
 
 Current skills: `review-sps` (one feature/diff), `audit-sps` (whole-codebase
 scan — fans out to subagents per module, ranks globally, collapses repetitive
-low-severity noise), and `pay-check` (payment-domain review — idempotency, money
+low-severity noise), `pay-check` (payment-domain review — idempotency, money
 representation, atomic balance updates, webhook verification; layered on top of
-the generic SPS review). When adding a skill, restate the shared ruleset in its
-`SKILL.md` — skills are loaded independently and must be self-contained.
+the generic SPS review), and `pr-review` (reviews a GitHub PR fetched via the
+`gh` CLI; can post findings back as PR comments). When adding a skill, restate
+the shared ruleset in its `SKILL.md` — skills are loaded independently and must
+be self-contained.
+
+Every review skill also carries an **output-language** rule: findings are
+written in English by default, switching to Indonesian when the developer asks
+(keep code/paths/severity labels unchanged). Keep this consistent across skills.
 
 Spec-driven scaffolding is intentionally out of scope — that workflow is handled
 by OpenSpec, not this plugin.

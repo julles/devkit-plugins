@@ -9,6 +9,7 @@ Current skills:
 | review-sps | `/devkit:review-sps` | Reviews a **single feature/change** (diff, files, or named feature) with priorities **Security > Performance > Simplicity**, then applies fixes only when you approve them. |
 | audit-sps | `/devkit:audit-sps` | Scans the **whole existing codebase** against the same SPS ruleset — fans out across modules, ranks findings globally, then applies fixes only when you approve them. |
 | pay-check | `/devkit:pay-check` | **Payment-domain review** for money-handling backends — idempotency, money representation, atomic balance updates, webhook verification, transaction state machines, PAN/PII exposure, provider-call resilience. Same review→approve→apply flow. |
+| pr-review | `/devkit:pr-review <url>` | **GitHub pull request review** — fetches the PR diff via `gh`, reviews against the SPS ruleset, and can post findings back to the PR as review comments. |
 
 Detailed per-skill documentation, with payment-gateway examples, lives in
 [`docs/`](docs/README.md).
@@ -52,8 +53,8 @@ claude --plugin-dir ./plugins/devkit
 
 ## Usage
 
-Both skills follow the same flow: **review → numbered findings → you choose what
-to apply.** Nothing is changed until you approve it.
+All review skills follow the same flow: **review → numbered findings → you
+choose what to apply.** Nothing is changed until you approve it.
 
 1. Reads the target repo's `CLAUDE.md` for context (language, conventions).
 2. Lists **numbered findings**, grouped Security → Performance → Simplicity, each
@@ -66,6 +67,10 @@ to apply.** Nothing is changed until you approve it.
    apply all security
    skip
    ```
+
+**Output language:** findings are written in **English by default**. Ask for
+Indonesian (say "bahasa Indonesia" or pass `id`) and the problem/suggestion text
+switches to Indonesian; code, paths, and severity labels stay as-is.
 
 ### review-sps — one feature/change
 
@@ -100,6 +105,18 @@ updates, webhook signature + replay protection, valid transaction state
 transitions, no PAN/PII in logs, and resilient provider calls (timeout after a
 charge → reconcile, don't blindly retry).
 
+### pr-review — a GitHub pull request
+
+```
+/devkit:pr-review https://github.com/acme/payments/pull/482
+/devkit:pr-review acme/payments#482
+```
+
+Requires the `gh` CLI, authenticated (`gh auth login`). It fetches the PR diff
+remotely (no checkout needed), reviews it against the SPS ruleset, and can post
+the findings back to the PR as review comments or apply them to a locally
+checked-out branch.
+
 ## Repo layout
 
 ```
@@ -115,8 +132,10 @@ devkit-plugins/
 │           │   └── SKILL.md        # single feature/diff review
 │           ├── audit-sps/
 │           │   └── SKILL.md        # whole-codebase scan
-│           └── pay-check/
-│               └── SKILL.md        # payment-domain review
+│           ├── pay-check/
+│           │   └── SKILL.md        # payment-domain review
+│           └── pr-review/
+│               └── SKILL.md        # GitHub pull request review
 └── README.md
 ```
 

@@ -12,6 +12,7 @@ reviewing, auditing, or generating code.
 | review-sps | `/devkit:review-sps` | Review a single feature or change | [review-sps.md](review-sps.md) |
 | audit-sps | `/devkit:audit-sps` | Audit an entire codebase | [audit-sps.md](audit-sps.md) |
 | pay-check | `/devkit:pay-check` | Payment-domain review of money-handling code | [pay-check.md](pay-check.md) |
+| pr-review | `/devkit:pr-review <url>` | Review a GitHub pull request from its URL | [pr-review.md](pr-review.md) |
 
 ## Shared model
 
@@ -57,11 +58,18 @@ Every finding carries a severity so you can triage:
 
 ## Context awareness
 
-Before reviewing or generating, the skills read the target repository's
-`CLAUDE.md` and manifests (`go.mod`, `package.json`, …) to learn the stack,
-framework, conventions, and — for payment work — the provider(s) in use
-(Stripe, Midtrans, Xendit, etc). Suggestions and generated code follow the
-repository's own conventions rather than a generic template.
+Before reviewing, the skills read the target repository's `CLAUDE.md` and
+manifests (`go.mod`, `package.json`, …) to learn the stack, framework,
+conventions, and — for payment work — the provider(s) in use (Stripe, Midtrans,
+Xendit, etc). Suggestions follow the repository's own conventions rather than a
+generic template.
+
+## Output language
+
+Findings are written in **English by default**. Ask for Indonesian (say "bahasa
+Indonesia" or pass `id`) and the problem, suggestion, and summary text switch to
+Indonesian. Code, identifiers, file paths, severity labels, and command names
+always stay unchanged.
 
 ## Installation
 

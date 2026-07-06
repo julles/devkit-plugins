@@ -1,7 +1,7 @@
 {
   "name": "devkit",
-  "description": "Developer toolkit for Claude Code. Ships review-sps (feature/diff review) and audit-sps (whole-codebase scan) — both Security > Performance > Simplicity — plus pay-check (payment-domain review).",
-  "version": "2.0.0",
+  "description": "Developer toolkit for Claude Code. Code review with priorities Security > Performance > Simplicity: review-sps (feature/diff), audit-sps (whole codebase), pay-check (payment domain), and pr-review (GitHub pull requests). English or Indonesian output.",
+  "version": "2.1.0",
   "author": {
     "name": "reza",
     "email": "reza.wikrama3@gmail.com"

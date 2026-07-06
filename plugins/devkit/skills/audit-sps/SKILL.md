@@ -17,6 +17,13 @@ A whole repo is too big for one pass and produces too many findings to dump
 raw. The two jobs unique to this skill are **fan-out** (cover it all) and
 **noise control** (surface what matters, don't drown it).
 
+## Output language
+
+Write findings in **English by default**. If the developer asks for Indonesian
+(e.g. "bahasa Indonesia", "in Indonesian", or an `id` / `--lang id` argument),
+write the Problem, Suggestion, and summary text in Indonesian. Always keep code,
+identifiers, file paths, severity labels, and command names unchanged.
+
 ## 1. Determine scope
 
 Get the source files, not the noise:
