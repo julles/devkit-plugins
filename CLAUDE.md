@@ -54,14 +54,10 @@ consistent with them:
 
 Current skills: `review-sps` (one feature/diff), `audit-sps` (whole-codebase
 scan — fans out to subagents per module, ranks globally, collapses repetitive
-low-severity noise), `pay-check` (payment-domain review — idempotency, money
+low-severity noise), and `pay-check` (payment-domain review — idempotency, money
 representation, atomic balance updates, webhook verification; layered on top of
-the generic SPS review), and `codegen` (spec-driven scaffolding — generates a
-vertical slice from a lightweight Markdown spec by mirroring an existing repo
-slice; migration included, no tests, no OpenAPI). `codegen` runs end-to-end;
-the same flow is also split into step commands `codegen-explore`,
-`codegen-create-spec`, `codegen-apply`, `codegen-archive`, which hand off state
-through files in `specs/` (`<feature>.explore.md` → `<feature>.md` →
-`specs/archive/<date>-<feature>.md`). When adding a skill, restate the shared
-ruleset in its `SKILL.md` — skills are loaded independently and must be
-self-contained.
+the generic SPS review). When adding a skill, restate the shared ruleset in its
+`SKILL.md` — skills are loaded independently and must be self-contained.
+
+Spec-driven scaffolding is intentionally out of scope — that workflow is handled
+by OpenSpec, not this plugin.

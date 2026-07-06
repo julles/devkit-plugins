@@ -9,7 +9,6 @@ Current skills:
 | review-sps | `/devkit:review-sps` | Reviews a **single feature/change** (diff, files, or named feature) with priorities **Security > Performance > Simplicity**, then applies fixes only when you approve them. |
 | audit-sps | `/devkit:audit-sps` | Scans the **whole existing codebase** against the same SPS ruleset — fans out across modules, ranks findings globally, then applies fixes only when you approve them. |
 | pay-check | `/devkit:pay-check` | **Payment-domain review** for money-handling backends — idempotency, money representation, atomic balance updates, webhook verification, transaction state machines, PAN/PII exposure, provider-call resilience. Same review→approve→apply flow. |
-| codegen | `/devkit:codegen` | **Spec-driven scaffolding** — from a lightweight Markdown spec, generates a vertical slice (handler, service, repository, DTO/model, migration) that mirrors the repo's conventions. Migration included, tests deferred, no OpenAPI. Runs end-to-end, or step-by-step via `codegen-explore` → `codegen-create-spec` → `codegen-apply` → `codegen-archive`. |
 
 Detailed per-skill documentation, with payment-gateway examples, lives in
 [`docs/`](docs/README.md).
@@ -88,32 +87,6 @@ updates, webhook signature + replay protection, valid transaction state
 transitions, no PAN/PII in logs, and resilient provider calls (timeout after a
 charge → reconcile, don't blindly retry).
 
-### codegen — spec-driven scaffolding
-
-```
-/devkit:codegen specs/refund.md       # generate from a spec file
-/devkit:codegen a refund endpoint     # drafts the spec first, then generates
-```
-
-Linear, one-shot flow: **explore → create spec → approve/enhance → generate → archive.**
-
-1. **Explore** — reads `CLAUDE.md` + code to find a mirror slice, the entity's
-   neighbours, and cross-cutting conventions, so the spec is grounded in the
-   real codebase.
-2. **Create spec** — auto-writes a lightweight Markdown spec named after the
-   feature to `specs/<feature>.md` (entity, fields, operations, business rules,
-   mirror slice).
-3. **Approve/enhance** — you review, edit, or enhance the spec. **No code is
-   written until you approve.**
-4. **Generate** — mirrors the existing slice (structure, naming, DI, error
-   handling) and generates handler → service → repository → DTO/model →
-   migration, with SPS + payment rules baked in.
-5. **Archive** — when you say so, moves the spec to
-   `specs/archive/<YYYY-MM-DD>-<feature>.md` (not automatic).
-
-The spec is a single-use instruction, not a living contract — each change is a
-**new** spec through the same flow. It does **not** generate tests or OpenAPI.
-
 ## Repo layout
 
 ```
@@ -129,10 +102,8 @@ devkit-plugins/
 │           │   └── SKILL.md        # single feature/diff review
 │           ├── audit-sps/
 │           │   └── SKILL.md        # whole-codebase scan
-│           ├── pay-check/
-│           │   └── SKILL.md        # payment-domain review
-│           └── codegen/
-│               └── SKILL.md        # spec-driven scaffolding
+│           └── pay-check/
+│               └── SKILL.md        # payment-domain review
 └── README.md
 ```
 

@@ -1,7 +1,7 @@
 {
   "name": "devkit",
-  "description": "Developer toolkit for Claude Code. Ships review-sps (feature/diff review), audit-sps (whole-codebase scan) — both Security > Performance > Simplicity — pay-check (payment-domain review), and codegen (spec-driven backend scaffolding, end-to-end or as explore/create-spec/apply/archive steps).",
-  "version": "1.6.0",
+  "description": "Developer toolkit for Claude Code. Ships review-sps (feature/diff review) and audit-sps (whole-codebase scan) — both Security > Performance > Simplicity — plus pay-check (payment-domain review).",
+  "version": "2.0.0",
   "author": {
     "name": "reza",
     "email": "reza.wikrama3@gmail.com"

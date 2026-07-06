@@ -12,7 +12,6 @@ reviewing, auditing, or generating code.
 | review-sps | `/devkit:review-sps` | Review a single feature or change | [review-sps.md](review-sps.md) |
 | audit-sps | `/devkit:audit-sps` | Audit an entire codebase | [audit-sps.md](audit-sps.md) |
 | pay-check | `/devkit:pay-check` | Payment-domain review of money-handling code | [pay-check.md](pay-check.md) |
-| codegen | `/devkit:codegen` | Spec-driven backend scaffolding | [codegen.md](codegen.md) |
 
 ## Shared model
 
@@ -43,8 +42,7 @@ apply all security
 skip
 ```
 
-Only the findings you name are applied. `codegen` follows the same principle:
-it never generates code before you approve the spec.
+Only the findings you name are applied.
 
 ### 3. Severity: Critical / High / Medium / Low
 

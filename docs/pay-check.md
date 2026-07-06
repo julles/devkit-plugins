@@ -124,6 +124,4 @@ is left for a follow-up because it involves the shared webhook layer.
 ## Recommended usage
 
 Run `pay-check` alongside `review-sps` on every payment endpoint: `review-sps`
-for generic quality, `pay-check` for the money path. When scaffolding with
-[codegen](codegen.md), the generated money code already satisfies these rules,
-so `pay-check` on new code should come back clean.
+for generic quality, `pay-check` for the money path.
