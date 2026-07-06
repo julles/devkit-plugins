@@ -6,7 +6,8 @@ Current skills:
 
 | Skill | Command | What it does |
 | ----- | ------- | ------------ |
-| review-sps | `/devkit:review-sps` | Reviews a feature/change with priorities **Security > Performance > Simplicity**, then applies fixes only when you approve them. |
+| review-sps | `/devkit:review-sps` | Reviews a **single feature/change** (diff, files, or named feature) with priorities **Security > Performance > Simplicity**, then applies fixes only when you approve them. |
+| audit-sps | `/devkit:audit-sps` | Scans the **whole existing codebase** against the same SPS ruleset — fans out across modules, ranks findings globally, then applies fixes only when you approve them. |
 
 > More skills (e.g. a code generator) will live under the same `devkit` namespace: `/devkit:gen`, etc.
 
@@ -34,23 +35,16 @@ Then restart Claude Code (or run `/reload-plugins`).
 claude --plugin-dir ./plugins/devkit
 ```
 
-## Usage: review-sps
+## Usage
 
-Point it at a diff, files, or a named feature:
+Both skills follow the same flow: **review → numbered findings → you choose what
+to apply.** Nothing is changed until you approve it.
 
-```
-/devkit:review-sps                    # reviews your uncommitted git diff
-/devkit:review-sps internal/auth/     # reviews a folder
-/devkit:review-sps login flow         # finds the feature's files and reviews them
-```
-
-Flow:
-
-1. It reads the target repo's `CLAUDE.md` for context (language, conventions).
-2. Reviews against the SPS ruleset and lists **numbered findings**, grouped
-   Security → Performance → Simplicity, each with a severity
-   (Critical / High / Medium / Low), `file:line`, the problem, and a suggested fix.
-3. **Nothing is changed yet.** You decide what to apply:
+1. Reads the target repo's `CLAUDE.md` for context (language, conventions).
+2. Lists **numbered findings**, grouped Security → Performance → Simplicity, each
+   with a severity (Critical / High / Medium / Low), `file:line`, the problem,
+   and a suggested fix.
+3. You decide:
 
    ```
    apply #1 #3
@@ -58,7 +52,24 @@ Flow:
    skip
    ```
 
-It only edits the files for findings you approve.
+### review-sps — one feature/change
+
+```
+/devkit:review-sps                    # reviews your uncommitted git diff
+/devkit:review-sps internal/auth/     # reviews a folder
+/devkit:review-sps login flow         # finds the feature's files and reviews them
+```
+
+### audit-sps — the whole codebase
+
+```
+/devkit:audit-sps                     # scans the entire tracked source tree
+/devkit:audit-sps internal/           # scans one subtree
+```
+
+It fans out across modules (parallel subagents on larger repos), ranks all
+findings globally, and collapses repetitive low-severity simplicity noise into
+counts so the important items stay visible.
 
 ## Repo layout
 
@@ -71,11 +82,13 @@ devkit-plugins/
 │       ├── .claude-plugin/
 │       │   └── plugin.json        # plugin manifest
 │       └── skills/
-│           └── review-sps/
-│               └── SKILL.md       # the review-sps skill
+│           ├── review-sps/
+│           │   └── SKILL.md        # single feature/diff review
+│           └── audit-sps/
+│               └── SKILL.md        # whole-codebase scan
 └── README.md
 ```
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+[MIT](https://reza.mit-license.org/) — see [LICENSE](LICENSE).
