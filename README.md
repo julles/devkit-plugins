@@ -9,8 +9,7 @@ Current skills:
 | review-sps | `/devkit:review-sps` | Reviews a **single feature/change** (diff, files, or named feature) with priorities **Security > Performance > Simplicity**, then applies fixes only when you approve them. |
 | audit-sps | `/devkit:audit-sps` | Scans the **whole existing codebase** against the same SPS ruleset — fans out across modules, ranks findings globally, then applies fixes only when you approve them. |
 | pay-check | `/devkit:pay-check` | **Payment-domain review** for money-handling backends — idempotency, money representation, atomic balance updates, webhook verification, transaction state machines, PAN/PII exposure, provider-call resilience. Same review→approve→apply flow. |
-
-> More skills (e.g. a code generator) will live under the same `devkit` namespace: `/devkit:gen`, etc.
+| codegen | `/devkit:codegen` | **Spec-driven scaffolding** — from a lightweight Markdown spec, generates a vertical slice (handler, service, repository, DTO/model, migration) that mirrors the repo's conventions. Migration included, tests deferred, no OpenAPI. |
 
 ## Install
 
@@ -86,6 +85,20 @@ updates, webhook signature + replay protection, valid transaction state
 transitions, no PAN/PII in logs, and resilient provider calls (timeout after a
 charge → reconcile, don't blindly retry).
 
+### codegen — spec-driven scaffolding
+
+```
+/devkit:codegen specs/refund.md       # generate from a spec file
+/devkit:codegen a refund endpoint     # drafts the spec first, then generates
+```
+
+A lightweight **Markdown spec is the source of truth**. codegen mirrors an
+existing feature slice in your repo (structure, naming, DI, error handling),
+shows a file plan for approval, then generates handler → service → repository →
+DTO/model → migration, with the house rules and payment rules baked in. It does
+**not** generate tests or OpenAPI. Re-running against an updated spec syncs the
+code.
+
 ## Repo layout
 
 ```
@@ -101,8 +114,10 @@ devkit-plugins/
 │           │   └── SKILL.md        # single feature/diff review
 │           ├── audit-sps/
 │           │   └── SKILL.md        # whole-codebase scan
-│           └── pay-check/
-│               └── SKILL.md        # payment-domain review
+│           ├── pay-check/
+│           │   └── SKILL.md        # payment-domain review
+│           └── codegen/
+│               └── SKILL.md        # spec-driven scaffolding
 └── README.md
 ```
 
