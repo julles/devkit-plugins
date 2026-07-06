@@ -15,7 +15,7 @@ Current skills:
 From GitHub (after you push this repo):
 
 ```
-/plugin marketplace add YOUR_GITHUB_USERNAME/devkit-plugins
+/plugin marketplace add julles/devkit-plugins
 /plugin install devkit@devkit-plugins
 ```
 
@@ -75,11 +75,6 @@ devkit-plugins/
 │               └── SKILL.md       # the review-sps skill
 └── README.md
 ```
-
-## Before you publish
-
-Replace `YOUR_GITHUB_USERNAME` in `plugin.json` and this README with your actual
-GitHub username.
 
 ## License
 
