@@ -31,6 +31,19 @@ Or from a local clone:
 
 Then restart Claude Code (or run `/reload-plugins`).
 
+## Update
+
+When a new version is published, refresh the marketplace catalog and update the
+plugin:
+
+```
+/plugin marketplace update devkit-plugins
+/plugin update devkit
+```
+
+Then run `/reload-plugins` (or restart Claude Code) to load the changes. Updates
+only arrive when the `version` in `plugin.json` is bumped.
+
 ### Try it without installing
 
 ```
