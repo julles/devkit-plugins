@@ -11,6 +11,9 @@ Current skills:
 | pay-check | `/devkit:pay-check` | **Payment-domain review** for money-handling backends — idempotency, money representation, atomic balance updates, webhook verification, transaction state machines, PAN/PII exposure, provider-call resilience. Same review→approve→apply flow. |
 | codegen | `/devkit:codegen` | **Spec-driven scaffolding** — from a lightweight Markdown spec, generates a vertical slice (handler, service, repository, DTO/model, migration) that mirrors the repo's conventions. Migration included, tests deferred, no OpenAPI. |
 
+Detailed per-skill documentation, with payment-gateway examples, lives in
+[`docs/`](docs/README.md).
+
 ## Install
 
 From GitHub (after you push this repo):
