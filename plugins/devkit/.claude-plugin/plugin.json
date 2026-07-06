@@ -1,0 +1,12 @@
+{
+  "name": "devkit",
+  "description": "Developer toolkit for Claude Code. Ships review-sps: a code review skill with priorities Security > Performance > Simplicity.",
+  "version": "1.0.0",
+  "author": {
+    "name": "reza",
+    "email": "reza.wikrama3@gmail.com"
+  },
+  "homepage": "https://github.com/YOUR_GITHUB_USERNAME/devkit-plugins",
+  "repository": "https://github.com/YOUR_GITHUB_USERNAME/devkit-plugins",
+  "license": "MIT"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "devkit-plugins",
+  "owner": {
+    "name": "reza",
+    "email": "reza.wikrama3@gmail.com"
+  },
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "devkit",
+      "source": "devkit",
+      "description": "Developer toolkit: review-sps code review (Security > Performance > Simplicity)."
+    }
+  ]
+}
