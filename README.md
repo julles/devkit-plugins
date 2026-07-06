@@ -92,19 +92,19 @@ charge → reconcile, don't blindly retry).
 /devkit:codegen a refund endpoint     # drafts the spec first, then generates
 ```
 
-Two gates:
+Linear, one-shot flow: **create spec → approve → generate → archive.**
 
-1. **Spec first** — codegen writes a lightweight Markdown spec (entity, fields,
-   operations, business rules) and shows it for review. You edit/approve. It
-   generates **no code** until the spec is approved, then saves it under `specs/`.
-2. **Then code** — after approval it mirrors an existing feature slice in your
-   repo (structure, naming, DI, error handling) and generates handler → service
-   → repository → DTO/model → migration, with the house rules and payment rules
-   baked in.
+1. **Create spec** — codegen writes a lightweight Markdown spec (entity, fields,
+   operations, business rules) to `specs/<feature>.md`.
+2. **Approve** — it shows the spec for review; you edit/approve. **No code is
+   written until the spec is approved.**
+3. **Generate** — mirrors an existing feature slice in your repo (structure,
+   naming, DI, error handling) and generates handler → service → repository →
+   DTO/model → migration, with the house rules and payment rules baked in.
+4. **Archive** — moves the spec to `specs/archive/<YYYY-MM-DD>-<feature>.md`.
 
-The **Markdown spec is the source of truth**. It does **not** generate tests or
-OpenAPI. Re-running against an updated spec re-confirms the spec, then syncs the
-code.
+The spec is a single-use instruction, not a living contract — each change is a
+**new** spec through the same flow. It does **not** generate tests or OpenAPI.
 
 ## Repo layout
 
